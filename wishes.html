@@ -105,15 +105,17 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎉 Поздравления с Днем Рождения! 🎂</h1>
-        <p>Оставьте пожелание для именинника!</p>
-        <input id="nameInput" type="text" placeholder="Ваше имя...">
-        <textarea id="wishInput" placeholder="Напишите ваше пожелание..."></textarea>
-        <button onclick="addWish()">🎈 Отправить 🎁</button>
+        <h1>🎉 Туылған күнге тілектер! 🎂</h1>
+        <p>Оставьте пожелание для нашего любимого человека!</p>
+        <input id="nameInput" type="text" placeholder="Сіздің атыңыз...">
+        <textarea id="wishInput" placeholder="Тілегіңізді жазыңыз.."></textarea>
+        <button onclick="addWish()">🎈 Жіберу 🎁</button>
         <div class="wishes" id="wishesContainer"></div>
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", loadWishes);
+        
         function addWish() {
             let nameInput = document.getElementById("nameInput");
             let wishInput = document.getElementById("wishInput");
@@ -121,21 +123,42 @@
             let text = wishInput.value.trim();
             if (text === "") return;
             
+            let wishes = JSON.parse(localStorage.getItem("wishes")) || [];
+            let wish = { name: name || "Аноним", text: text };
+            wishes.push(wish);
+            localStorage.setItem("wishes", JSON.stringify(wishes));
+            
+            renderWish(wish);
+            nameInput.value = "";
+            wishInput.value = "";
+        }
+        
+        function renderWish(wish) {
             let wishContainer = document.createElement("div");
             wishContainer.className = "wish";
-            wishContainer.innerHTML = `<span><strong>${name || "Аноним"}:</strong> ${text}</span>`;
+            wishContainer.innerHTML = `<span><strong>${wish.name}:</strong> ${wish.text}</span>`;
             
             let deleteBtn = document.createElement("button");
             deleteBtn.className = "delete-btn";
             deleteBtn.innerHTML = "❌";
             deleteBtn.onclick = function() {
                 wishContainer.remove();
+                deleteWish(wish);
             };
             
             wishContainer.appendChild(deleteBtn);
             document.getElementById("wishesContainer").appendChild(wishContainer);
-            nameInput.value = "";
-            wishInput.value = "";
+        }
+        
+        function loadWishes() {
+            let wishes = JSON.parse(localStorage.getItem("wishes")) || [];
+            wishes.forEach(renderWish);
+        }
+        
+        function deleteWish(wishToDelete) {
+            let wishes = JSON.parse(localStorage.getItem("wishes")) || [];
+            wishes = wishes.filter(wish => wish.text !== wishToDelete.text || wish.name !== wishToDelete.name);
+            localStorage.setItem("wishes", JSON.stringify(wishes));
         }
     </script>
 </body>
