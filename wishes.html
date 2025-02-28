@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поздравления с Днем Рождения</title>
+    <style>
+        :root {
+            --primary-color: #ff4081;
+            --hover-color: #e91e63;
+            --background-color: #fff3e0;
+            --container-bg: #fff;
+            --text-color: #5d4037;
+            --wish-bg: #ffeb3b;
+            --border-color: #ff9800;
+        }
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            background-color: var(--background-color);
+            padding: 20px;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: var(--container-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border: 4px solid var(--border-color);
+        }
+        h1 {
+            color: var(--primary-color);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        textarea, input {
+            width: 100%;
+            margin: 10px 0;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px;
+            background: #fffde7;
+        }
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background-color: var(--hover-color);
+            transform: scale(1.05);
+        }
+        .wishes {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .wish {
+            background: var(--wish-bg);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .wish:hover {
+            transform: scale(1.03);
+        }
+        .delete-btn {
+            background: none;
+            border: none;
+            color: var(--hover-color);
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+            }
+            button {
+                width: 100%;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Поздравления с Днем Рождения! 🎂</h1>
+        <p>Оставьте пожелание для именинника!</p>
+        <input id="nameInput" type="text" placeholder="Ваше имя...">
+        <textarea id="wishInput" placeholder="Напишите ваше пожелание..."></textarea>
+        <button onclick="addWish()">🎈 Отправить 🎁</button>
+        <div class="wishes" id="wishesContainer"></div>
+    </div>
+
+    <script>
+        function addWish() {
+            let nameInput = document.getElementById("nameInput");
+            let wishInput = document.getElementById("wishInput");
+            let name = nameInput.value.trim();
+            let text = wishInput.value.trim();
+            if (text === "") return;
+            
+            let wishContainer = document.createElement("div");
+            wishContainer.className = "wish";
+            wishContainer.innerHTML = `<span><strong>${name || "Аноним"}:</strong> ${text}</span>`;
+            
+            let deleteBtn = document.createElement("button");
+            deleteBtn.className = "delete-btn";
+            deleteBtn.innerHTML = "❌";
+            deleteBtn.onclick = function() {
+                wishContainer.remove();
+            };
+            
+            wishContainer.appendChild(deleteBtn);
+            document.getElementById("wishesContainer").appendChild(wishContainer);
+            nameInput.value = "";
+            wishInput.value = "";
+        }
+    </script>
+</body>
+</html>
